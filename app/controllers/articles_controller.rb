@@ -65,24 +65,8 @@ class ArticlesController < ApplicationController
     @catalog = Catalog.select(:id, :name)
     file = params[:excel].path
     file_name = params[:excel].original_filename.split(".")
-    if file_name.last == 'xlsxs'
-      xlsx = Roo::Spreadsheet.open(file)
-      message = ""
-      xlsx.sheet("Sheet1").each_with_index do |row,index|
-        next if index == 0
-        title = row[0]
-        text =  row[1]
-        serial = row[2]
-        number = row[3]
-        catalog =row[4] 
-        unless catalog = Catalog.find_by(name: catalog)
-          catalog = Catalog.create(name: row[4])
-          catalog.save
-        end     
-        article = Article.new(title:title, text:text, serial:serial, number:number, catalog_id:catalog.id) 
-        article.save
-        message << "第"+"#{index+1}"+"行"+"保存失败，失败原因是:"+article.errors.full_messages.join(',') if !article.save
-      end
+    if file_name.last == 'xlsx'
+      message =  Article.read_excel(file)
       flash[:errors] = message 
     else
       flash[:errors] = "只能上传excel文件"
