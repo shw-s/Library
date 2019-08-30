@@ -1,0 +1,57 @@
+<h1>书籍目录</h1>
+  <p><%= flash[:errors] %></p>
+  <%= search_form_for(@q)  do |f| %>
+    <%= f.label :书名作者查询 %>
+    <%= f.search_field :title_or_text_cont%>
+    <br>
+    <%= f.label :编号查询%>
+    <%= f.search_field :serial_eq%>
+    <%= f.submit '查找'%>
+  <% end %>
+  <br>
+  <%if current_user.role_ids.include?(1) %>
+    <%= link_to '角色管理', roles_path %> |
+    <%= link_to '用户管理', users_path %> |
+    <%= link_to '书籍增加', new_article_path %> |
+  <%end%>
+    <%= link_to '书籍分类', catalogs_path %> |
+    <%= link_to '书籍借阅记录',borrows_path %>
+  <br>
+  
+  <%if current_user.role_ids.include?(1) %>
+    <%= form_tag(article_excel_articles_path,:multipart=>true) do %>  
+      <%= file_field_tag :excel %>
+      <%= submit_tag '上传excel文件' %>
+    <%end%>
+  <%end%>
+
+
+<table>
+  <tr>
+    <th>序列号</th>
+    <th>书本名称</th>
+    <th>编号</th>
+    <th>书本作者</th>
+    <th>书本数量</th>   
+    <th>书本分类</th>
+    <th colspan="3"></th>
+  </tr>
+ 
+  <% @articles.each do |article| %>
+    <tr>
+      <td><%= article.id %></td>
+      <td><%= article.title %></td>
+      <td><%= article.serial %></td>
+      <td><%= article.text %></td>
+      <td><%= article.number %></td>
+      <td><%= article.catalog.parent_name%>--<%= article.catalog.name%></td>
+      <td><%= link_to '展示', article_path(article) %></td>
+        <td><%= link_to '修改', edit_article_path(article) if current_user.role_ids.include?(1) %></td>
+        <td><%= link_to '删除', article_path(article),
+              method: :delete,
+              data: { confirm: '你确认操作吗？' } if current_user.role_ids.include?(1)%></td>
+      <td><%= link_to '借阅', article_list_article_path(article)%></td> 
+    </tr>
+  <% end %> 
+<%= will_paginate @articles %>          
+

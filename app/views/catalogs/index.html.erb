@@ -1,0 +1,27 @@
+<h1>书籍分类</h1>
+<%if current_user.role_ids.include?(1) %>
+  <%= link_to '增加书籍分类', new_catalog_path %>
+<%end%>
+
+<%= link_to '返回书籍目录', articles_path %>
+<table>
+  <tr>
+    <th>书籍父类  </th>
+    <th>书籍分类  </th>
+    <th colspan="3"></th>
+  </tr>
+
+
+  <% @catalogs.each do |catalog| %>
+    <tr>
+      <td><%= catalog.parent_name%></td>
+      <td><%= catalog.name %></td>
+      
+      <td><%= link_to '书籍增加', new_article_path(catalog_id: catalog.id) %></td>
+      <td><%= link_to '分类修改', edit_catalog_path(catalog) %></td>
+      <td><%= link_to '分类删除', catalog_path(catalog),
+              method: :delete,
+              data: { confirm: '你确认操作吗？' } %></td>        
+    </tr>
+  <% end %>
+  

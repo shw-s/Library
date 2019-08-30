@@ -1,0 +1,29 @@
+<h1>管理员审核</h1>
+
+<%= form_for :borrow ,url: examine_do_borrow_path(@borrow) do |f| %>
+  <p>
+    <%= f.label :书籍序列号 %><br>
+    <%= @borrow.article_id%>-<%= @borrow.article_name%>
+  </p>
+  <p>
+    <%= f.label :借书人 %><br>
+    <%= @borrow.user_id%>-<%= @borrow.user_name%>
+  </p>
+
+  <p>
+    <%= f.label :审核状态 %><br>
+    <%= radio_button_tag :state, '通过' %>
+    <%= label_tag ("通过") %>
+    <br>
+    <%= radio_button_tag :state, '不通过' %>
+    <%= label_tag ("不通过") %>
+
+  </p>
+
+
+  <p>
+    <%= f.submit '确认'%>
+  </p>
+
+  <%= link_to '返回', borrows_path %>
+<% end %>

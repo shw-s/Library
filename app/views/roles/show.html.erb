@@ -1,0 +1,22 @@
+<h1>角色展示</h1>
+
+<p>
+  <strong>角色名称:</strong>
+  <%= @role.name %>
+</p>
+
+<p>
+  <strong>描述:</strong>
+  <%= @role.desc %>
+</p>
+
+<p>
+  <strong>类别:</strong>
+  <%= @role.kind %>
+</p>
+
+
+
+<td><%= link_to '角色修改', edit_role_path %></td>
+<br>
+<td><%= link_to '返回', roles_path %></td>

@@ -1,0 +1,22 @@
+<h1>角色分配</h1>
+<p><%= flash[:error_message]%> </p>
+<%= form_for :user,url: role_save_user_path(@user) do |f| %>
+
+  <p>
+    <%= f.label :角色分配 %><br>
+    <% @roles.each do|role| %>     
+      
+      <%= check_box_tag 'role_ids[]',role.id,
+      @user.roles.ids.include?(role.id)%>
+      <!-- 判断user关联表中roles.ids中是否包含 role.id -->
+      <%= role.name%>
+    <%end%>
+
+  </p>
+
+  <p>
+    <%= f.submit '保存分配'%>
+  </p>
+
+  <%= link_to '返回', users_path %>
+<% end %>

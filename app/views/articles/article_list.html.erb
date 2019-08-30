@@ -1,0 +1,25 @@
+<h1>借书确认</h1>
+  
+  <%= form_for :article ,url: article_borrow_do_article_path(@article) do |f| %>
+  <p>
+    <%= f.label :书籍序列号 %>:
+    <%= @article.id%>
+  </p>
+  <p>
+    <%= f.label :书本名称 %>  :
+    <%= @article.title%> 
+  </p>
+   <p> 
+    <%= f.label :借书用户序号 %>  :
+    <%= current_user.id%>
+    <%= f.label :借书用户名%>  :
+    <%= current_user.name%>
+  </p>
+
+ 
+  <p>
+    <%= f.submit '确认'%>
+  </p>
+
+  <%= link_to '返回', articles_path %>
+<% end %>

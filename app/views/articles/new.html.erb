@@ -1,0 +1,55 @@
+<h1>新书添加</h1>
+
+<%= form_for :article,url: articles_path do |f| %>
+
+
+  <% if @article.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@article.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @article.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <p>
+    <%= f.label :书籍编号 %><br>
+    <%= f.number_field :serial %>
+  </p>
+  <p>
+    <%= f.label :书本名称 %><br>
+    <%= f.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= f.label :书本作者 %><br>
+    <%= f.text_field :text %>
+  </p>
+
+  <p>
+    <%= f.label :书本数量 %><br>
+    <%= f.number_field :number %>
+  </p>
+ 
+  <p>
+    <%= f.label :书本类别 %><br>
+      
+      <%= f.select :catalog_id,options_for_select(@catalogs,params[:catalog_id]), include_blank: true %>
+  </p>
+
+  <p>
+    <%= f.label :图片详情 %><br>
+    <%= f.file_field :img %>
+  </p>
+  
+  <p>
+    <%= f.submit %>
+  </p>
+
+  <%= link_to '返回目录', articles_path %>
+<% end %>

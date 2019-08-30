@@ -1,0 +1,53 @@
+<h1>书籍借阅记录</h1>
+  <p><%= flash[:message] %></p> 
+  <%= link_to '书籍目录', articles_path %>
+<table>
+  <tr>
+    <th>书籍序列号</th>
+    <th>借书人</th>
+    <th>审核状态</th>
+    <th>归还情况</th>
+    <th>审核人</th>
+    <th colspan="3"></th>
+  <tr>
+  <% @borrows.each do |borrow|%>
+    <tr>
+      <td><%= borrow.article_id %>--<%= borrow.article_name%></td>
+      <td><%= borrow.user_id%>--<%= borrow.user_name%></td>
+      
+      <td><%if borrow.state%>
+        <%= borrow.state%>
+        <%else%>
+          <%= "未审核" %>
+        <%end%></td>
+
+      <td><%= borrow.reason%></td>
+      <td><%= borrow.auditor_id%>--<%= borrow.auditor_name%></td>
+      
+      <td>
+
+      <% if current_user.role_ids.include?(1) %>
+        <%= link_to '借阅审核', examine_borrow_path(borrow) if !borrow.state%>
+      <%end%>    
+      </td>
+      
+      <td>
+      <%  if borrow.state == '通过'  && borrow.user_id == current_user.id && borrow.reason == nil || borrow.reason == '未归还' %>
+        <%= link_to '归还', return_borrow_path(borrow) %>
+      <%end%>
+      </td>
+
+      <td>
+      <% if current_user.role_ids.include?(1) %> 
+        <%= link_to '归还审核', return_list_borrow_path(borrow) if borrow.reason == '未审核' %>
+      <%end%>
+      </td>
+      
+      <td>
+        <%if borrow.reason == '已归还' || borrow.state == '不通过'%>
+        <%= link_to '删除记录', borrow_path(borrow),
+              method: :delete,
+              data: { confirm: '你确认操作吗？' } %></td> 
+        <%end%>
+    </tr>
+<% end %>
